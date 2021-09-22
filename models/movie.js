@@ -1,22 +1,25 @@
 const mongoose = require('mongoose')
 const Joi = require("joi");
+const {genreSchema} = require('./genre')
 
-const Genre = mongoose.model('Genre',new mongoose.Schema({
-    name: {type:String, required:true, minlength:5, maxlength:50},
-    author: String,
-    tags: [String],
-    date: {type:Date,default: Date.now},
-    isPublished: Boolean
-    //If you need to talk to a database or a remote service to perform the validation, you need to create an async validator
+const Movie = mongoose.model('Movies',new mongoose.Schema({
+    title: {type:String, required:true, minlength:2, maxlength:255},
+    genre: {type: genreSchema, required:true},
+    popularity:{type:Number, required:true, min:0},
+    voteAverage:{type:Number, required:true, min:0},
+    posterPath:{type:String},
 }))
 
-function validateGenre(body) {
+function validateMovie(body) {
     const schema = Joi.object({
-        name: Joi.string().required().min(5).max(50),
-        id: Joi.number()
+        title: Joi.string().required().min(2).max(255),
+        genreId: Joi.string().required(),
+        popularity:Joi.number().required().min(0),
+        voteAverage:Joi.string().required().min(0),
+        posterPath:Joi.string(),
     });
     return schema.validate(body)
 }
 
-exports.Genre = Genre;
-exports.validate = validateGenre();
+exports.Movie = Movie;
+exports.validate = validateMovie();

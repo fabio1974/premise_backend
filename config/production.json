@@ -1,4 +1,5 @@
 {
   "name": "Premise backend - Prod",
-  "apiKey": "cead72f0ce836c05d97430a769039ae3"
+  "apiKey": "cead72f0ce836c05d97430a769039ae3",
+  "moviesServiceUrl": "https://api.themoviedb.org/3/movie/popular"
 }

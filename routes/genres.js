@@ -2,6 +2,7 @@ const express = require('express');
 const {Genre, validate} = require("../models/genre");
 const router = express.Router();
 
+
 router.get('/',async(req,res)=>{
     const genres = await Genre.find().sort('name');
     res.send(genres);
@@ -31,14 +32,14 @@ router.put('/:id', async (req, res) => {
         {name: req.body.name},
         {new:true})
     if (!genre)
-        return res.status(404).send('The course with the given ID was not in the database')
-    res.send(course);
+        return res.status(404).send('The genre with the given ID was not in the database')
+    res.send(genre);
 });
 
 router.delete('/:id', async (req, res) => {
     const genre = await Genre.findByIdAndDelete(req.body.id);
     if (!genre)
-        return res.status(404).send('The course with the given ID was not in the database')
+        return res.status(404).send('The genre with the given ID was not in the database')
     res.send(genre)
 });
 
