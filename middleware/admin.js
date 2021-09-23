@@ -7,8 +7,10 @@ module.exports = function(req, res, next) {
   if (!config.get("requiresAuth"))
     return next();
 
+  console.log("USER AT MIDDLEWARE",req.user)
+
   if (!req.user.isAdmin)
-    return res.status(403).send("No Admin! Access denied.");
+    return res.status(403).send("Message from server middleware: No Admin! Access denied.");
 
   next();
 };

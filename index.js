@@ -3,8 +3,6 @@ const express = require('express');
 const morgan  = require("morgan");  //for logging
 const mongoose= require('mongoose')
 const helmet  = require('helmet')
-//const debug   = require('debug')('app:startup')   //for debug filtering
-
 
 
 if(!config.get('mongoUrl')) {
@@ -25,6 +23,10 @@ const auth= require('./routes/auth')
 
 
 const app = express();
+
+const debug   = require('debug')('app:startup')   //for debug filtering
+
+
 require('./security/cors')(app);
 app.use(morgan('tiny'))
 app.use(express.json())  //parse

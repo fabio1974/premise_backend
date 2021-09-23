@@ -20,7 +20,7 @@ module.exports.loadAdmin = async () => {
     });
     if(count<1)
         user.save()
-    console.log("user admin : "  + user.email + " password "+ password)
+    console.log("user admin="  + user.email + " password="+ password)
 }
 
 
@@ -39,7 +39,7 @@ module.exports.loadGenresFromJsonFiles = async () => {
 module.exports.loadMoviesFromExternalService = async ()=>{
     try {
         let count = await Movie.count()
-        if(count<20) {
+        if(count===0) {
             movies = await getMoviesFromWebService()
             let countSaveds = await saveMoviesOnMongo(movies)
             console.log(`...loading more ${countSaveds} movies on the database`);
@@ -52,13 +52,12 @@ module.exports.loadMoviesFromExternalService = async ()=>{
 
 async function getMoviesFromWebService(){
     let url = `${config.get('moviesServiceUrl')}/?api_key=${config.get('movieApiKey')}`
-    console.log(url)
     const {data} = await axios.get(url)
     let genres = await Genre.find()
     return data.results.map(it => {
         let genre = genres[Math.floor(Math.random() * genres.length)]
         return Movie({"title":it.title,
-            "genre": {_id: genre._id, name: genre.name},
+            "genreId": genre._id,
             "popularity": it.popularity,
             "voteAverage": it.vote_average,
             "posterPath": it.poster_path
