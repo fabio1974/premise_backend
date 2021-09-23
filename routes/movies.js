@@ -35,15 +35,11 @@ router.post('/',[auth,admin],async (req, res) => {
     res.send(movie)
 })
 
-router.put('/:id', auth,async (req, res) => {
+router.put('/:id',auth,async (req, res) => {
 
     const {error} = validate(req.body);
     if (error)
         return res.status(400).send(error.details[0].message);
-
-    const genre  = await Genre.findById(req.body.genreId)
-    if(!genre)
-        return res.status(400).send('Genre invalid');
 
     movie = await Movie.findByIdAndUpdate(req.params.id,req.body,{new:true})
     if (!movie)
@@ -60,5 +56,20 @@ router.delete('/:id',[auth,admin],async (req, res) => {
 
 
 
-
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+const genre  = await Genre.findById(req.body.genreId)
+if(!genre)
+    return res.status(400).send('Genre invalid');*/
