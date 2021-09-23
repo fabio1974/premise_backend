@@ -1,18 +1,20 @@
 const config  = require('config')  //for environment variables
-const debug   = require('debug')('app:startup')   //for debug filtering
 const express = require('express');
 const morgan  = require("morgan");  //for logging
 const mongoose= require('mongoose')
 const helmet  = require('helmet')
+//const debug   = require('debug')('app:startup')   //for debug filtering
+
+
 
 if(!config.get('mongoUrl')) {
-    debug('FATAL ERROR: MONGO_URL environment variable is not defined')
+    console.log('FATAL ERROR: MONGO_URL environment variable is not defined')
     process.exit(1);
 }
 
 mongoose.connect(config.get('mongoUrl'))
-        .then(() => debug('Mongo connected...'))
-        .catch(err => debug('Could not connect to mongo', err))
+        .then(() => console.log('Mongo connected...'))
+        .catch(err => console.log('Could not connect to mongo', err))
 
 
 const loadData = require('./services/loadInitialDataOnMongo')
@@ -37,9 +39,10 @@ const PORT = process.env.PORT || 3900
 app.listen(PORT, ()=> console.log(`Listening on port ${PORT}`));
 
 Promise.all([
+    loadData.loadAdmin(),
     loadData.loadGenresFromJsonFiles(),
     loadData.loadMoviesFromExternalService()])
-    .then(result => debug("Dadabase loaded..."))
+    .then(result => console.log("Dadabase loaded..."))
 
 app.use('/api/movies', movies);
 app.use('/api/genres', genres);

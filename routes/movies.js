@@ -1,5 +1,6 @@
 const express = require('express');
 const auth = require('../middleware/auth')
+const admin = require('../middleware/admin')
 const {Movie, validate} = require("../models/movie");
 const {Genre} = require("../models/genre")
 const router = express.Router();
@@ -11,10 +12,13 @@ router.get('/',auth,async(req,res)=>{
 })
 
 router.get('/:id', auth,async(req,res)=>{
-    const movie = await Movie.findById(req.params.id)
-    if(!movie)
+    try {
+        const movie = await Movie.findById(req.params.id)
+        if(movie)
+            res.send(movie)
+    }catch (e) {
         return res.status(404).send('Code no found')
-    res.send(movie)
+    }
 })
 
 router.post('/',auth,async (req, res) => {
@@ -50,7 +54,7 @@ router.put('/:id', auth,async (req, res) => {
     res.send(movie);
 });
 
-router.delete('/:id', auth,async (req, res) => {
+router.delete('/:id',[auth,admin],async (req, res) => {
     const Movies = await Movies.findByIdAndDelete(req.body.id);
     if (!Movies)
         return res.status(404).send('The movie with the given ID was not in the database')

@@ -2,8 +2,26 @@ const axios = require("axios")
 const config = require('config')
 const {Movie, validate} = require("../models/movie");
 const {Genre} = require("../models/genre")
+const {User} = require("../models/user")
 const fs = require('fs');
+const bcrypt = require("bcrypt");
 const debug = require('debug')('app:db')
+
+
+module.exports.loadAdmin = async () => {
+    let count = await User.findOne({'email':'premise@andela.com'})
+    const salt = await bcrypt.genSalt(10);
+    let password = "12345"
+    let user = User({
+        "name": "Premise@Andela",
+        "email": "premise@andela.com",
+        "password": await bcrypt.hash(password, salt),
+        "isAdmin":true
+    });
+    if(count<1)
+        user.save()
+    console.log("user admin : "  + user.email + " password "+ password)
+}
 
 
 module.exports.loadGenresFromJsonFiles = async () => {
@@ -12,9 +30,9 @@ module.exports.loadGenresFromJsonFiles = async () => {
         let json = fs.readFileSync('./services/genres.json');
         let genres = JSON.parse(json);
         const result = await Genre.insertMany(genres)
-        debug("Load Genres first load with size = " + result.length)
+        console.log("Load Genres first load with size = " + result.length)
     }else
-        debug("Genre already loaded with size " + count)
+        console.log("Genre already loaded with size " + count)
 }
 
 
@@ -24,17 +42,17 @@ module.exports.loadMoviesFromExternalService = async ()=>{
         if(count<20) {
             movies = await getMoviesFromWebService()
             let countSaveds = await saveMoviesOnMongo(movies)
-            debug(`...loading more ${countSaveds} movies on the database`);
+            console.log(`...loading more ${countSaveds} movies on the database`);
         }else
-            debug("Movies already loaded with size " + count)
+            console.log("Movies already loaded with size " + count)
     } catch (err) {
         console.log({ message: err });
     }
 }
 
 async function getMoviesFromWebService(){
-    let url = `${config.get('moviesServiceUrl')}/?api_key=${config.get('apiKey')}`
-    debug(url)
+    let url = `${config.get('moviesServiceUrl')}/?api_key=${config.get('movieApiKey')}`
+    console.log(url)
     const {data} = await axios.get(url)
     let genres = await Genre.find()
     return data.results.map(it => {
@@ -56,16 +74,16 @@ async function saveMoviesOnMongo(movies){
             movie.save()
             count++
         }catch (e) {
-            debug("Validation Error ===>", e)
+            console.log("Validation Error ===>", e)
         }
     })
     return count
 }
 
-async function saveMovie(data) {
-    let movie = new Movie();
-    movie = await movie.save();
-}
+// async function saveMovie(data) {
+//     let movie = new Movie();
+//     movie = await movie.save();
+// }
 
 
 
