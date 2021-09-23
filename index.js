@@ -5,14 +5,25 @@ const morgan  = require("morgan");  //for logging
 const mongoose= require('mongoose')
 const helmet  = require('helmet')
 
+if(!config.get('mongoUrl')) {
+    debug('FATAL ERROR: MONGO_URL environment variable is not defined')
+    process.exit(1);
+}
+
 mongoose.connect(config.get('mongoUrl'))
-    .then(()=> debug('Mongo connected...'))
-    .catch(err=> debug('Could not connect to mongo',err))
+        .then(() => debug('Mongo connected...'))
+        .catch(err => debug('Could not connect to mongo', err))
+
 
 const loadData = require('./services/loadInitialDataOnMongo')
+const movies = require('./routes/movies')
+const genres = require('./routes/genres')
+const users = require('./routes/users')
+const auth= require('./routes/auth')
 
 
 const app = express();
+require('./security/cors')(app);
 app.use(morgan('tiny'))
 app.use(express.json())  //parse
 app.use(express.static('public'))  //publish static files on server
@@ -29,3 +40,8 @@ Promise.all([
     loadData.loadGenresFromJsonFiles(),
     loadData.loadMoviesFromExternalService()])
     .then(result => debug("Dadabase loaded..."))
+
+app.use('/api/movies', movies);
+app.use('/api/genres', genres);
+app.use('/api/users', users);
+app.use('/api/auth', auth);

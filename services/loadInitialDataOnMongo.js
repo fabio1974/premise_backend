@@ -21,7 +21,7 @@ module.exports.loadGenresFromJsonFiles = async () => {
 module.exports.loadMoviesFromExternalService = async ()=>{
     try {
         let count = await Movie.count()
-        if(count<40) {
+        if(count<20) {
             movies = await getMoviesFromWebService()
             let countSaveds = await saveMoviesOnMongo(movies)
             debug(`...loading more ${countSaveds} movies on the database`);

@@ -1,5 +1,6 @@
 {
-  "name": "Premise backend - Dev",
+  "name": "Premise Backend - Dev",
   "apiKey": "cead72f0ce836c05d97430a769039ae3",
-  "moviesServiceUrl": "https://api.themoviedb.org/3/movie/popular"
+  "moviesServiceUrl": "https://api.themoviedb.org/3/movie/popular",
+  "jwtPrivateKey": "jwtPrivateKey"
 }
