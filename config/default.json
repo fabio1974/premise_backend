@@ -3,5 +3,7 @@
   "name": "Premise backend",
   "movieApiKey": "cead72f0ce836c05d97430a769039ae3",
   "moviesServiceUrl": "https://api.themoviedb.org/3/movie/popular",
-  "mongoUrl": "mongodb://localhost:27017/movies_db?readPreference=primary&appname=MongoDB%20Compass&ssl=false"
+  "mongoUrl": "mongodb+srv://andela:andela@cluster0.b5ni9.mongodb.net/test?authSource=admin&replicaSet=atlas-xljsw6-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true"
 }
+
+

@@ -10,6 +10,8 @@ if(!config.get('mongoUrl')) {
     process.exit(1);
 }
 
+console.log("MONGO_URL=>"+config.get('mongoUrl'))
+
 mongoose.connect(config.get('mongoUrl'))
         .then(() => console.log('Mongo connected...'))
         .catch(err => console.log('Could not connect to mongo', err))

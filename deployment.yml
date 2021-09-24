@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: premise-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: premise-backend
+  template:
+    metadata:
+      labels:
+        name: premise-backend
+    spec:
+      containers:
+        - name: application
+          image: fb040974/premise-backend:1.0.1
+          env:
+            - name: MONGO_URL
+              value: "mongodb+srv://andela:andela@cluster0.b5ni9.mongodb.net/test?authSource=admin&replicaSet=atlas-xljsw6-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true"
+
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3900
