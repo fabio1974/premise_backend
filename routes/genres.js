@@ -2,7 +2,7 @@ const express = require('express');
 const auth = require('../middleware/auth')
 const {Genre, validate} = require("../models/genre");
 const router = express.Router();
-const debug = require('debug')('app:routes')
+
 
 
 router.get('/',auth,async(req,res)=>{

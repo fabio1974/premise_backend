@@ -11,7 +11,7 @@ require('./security/cors')(app);
 app.use(express.json())
 app.use(express.static('public'))
 app.use(express.urlencoded({extended:true}))
-require('./services/logging')(app)
+require('./startup/logging')(app)
 
 const PORT = process.env.PORT || 8080
 app.listen(PORT, ()=> console.log(`Listening on port ${PORT}`));
@@ -21,5 +21,5 @@ app.use('/api/genres', genres);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 
-require('./services/connectToMongo')()
-require('./services/loadInitialData')()
+require('./startup/connectToMongo')()
+require('./startup/loadInitialData')()

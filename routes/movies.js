@@ -2,7 +2,6 @@ const express = require('express');
 const auth = require('../middleware/auth')
 const admin = require('../middleware/admin')
 const {Movie, validate} = require("../models/movie");
-const {Genre} = require("../models/genre")
 const router = express.Router();
 
 
