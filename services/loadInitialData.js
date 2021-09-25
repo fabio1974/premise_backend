@@ -5,26 +5,33 @@ const {Genre} = require("../models/genre")
 const {User} = require("../models/user")
 const fs = require('fs');
 const bcrypt = require("bcrypt");
-const debug = require('debug')('app:db')
 
+module.exports = async () => {
+    await loadAdmin()
+    await loadGenresFromJsonFiles()
+    await loadMoviesFromExternalService();
+    console.log("Dadabase loaded...");
+}
 
-module.exports.loadAdmin = async () => {
-    let count = await User.findOne({'email':'premise@andela.com'})
-    const salt = await bcrypt.genSalt(10);
+async function loadAdmin(){
+    let email = "premise@andela.com"
     let password = "12345"
-    let user = new User({
-        "name": "Premise@Andela",
-        "email": "premise@andela.com",
-        "password": await bcrypt.hash(password, salt),
-        "isAdmin":true
-    });
-    if(count<1)
-        user.save()
-    console.log("user admin="  + user.email + " password="+ password + " inserted")
+    if(!await User.exists({'email':'premise@andela.com'})) {
+        const salt = await bcrypt.genSalt(10);
+        let user = new User({
+            "name": "Premise@Andela",
+            "email": email,
+            "password": await bcrypt.hash(password, salt),
+            "isAdmin": true
+        });
+        await user.save()
+        console.log("user admin inserted !!!")
+    }
+    console.log(`Admin=> email:${email}  password:${password}`)
 }
 
 
-module.exports.loadGenresFromJsonFiles = async () => {
+async function loadGenresFromJsonFiles() {
     let count = await Genre.count()
     if(count<10) {
         let json = fs.readFileSync('./services/genres.json');
@@ -36,7 +43,7 @@ module.exports.loadGenresFromJsonFiles = async () => {
 }
 
 
-module.exports.loadMoviesFromExternalService = async ()=>{
+async function loadMoviesFromExternalService(){
     try {
         let count = await Movie.count()
         if(count===0) {
@@ -79,11 +86,3 @@ async function saveMoviesOnMongo(movies){
     })
     return count
 }
-
-// async function saveMovie(data) {
-//     let movie = new Movie();
-//     movie = await movie.save();
-// }
-
-
-
