@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: application
-          image: fb040974/premise-backend:1.0.1
+          image: fb040974/premise-backend:1.0.2
           env:
             - name: MONGO_URL
               value: "mongodb+srv://andela:andela@cluster0.b5ni9.mongodb.net/test?authSource=admin&replicaSet=atlas-xljsw6-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true"

@@ -7,7 +7,7 @@
 #!/bin/bash
 REGISTRY=fb040974
 IMAGE=premise-backend
-VERSION=1.0.1
+VERSION=1.0.2
 echo "docker build . -t $REGISTRY/$IMAGE:$VERSION"
 docker build . -t $REGISTRY/$IMAGE:$VERSION
 echo "docker push $REGISTRY/$IMAGE:$VERSION"
