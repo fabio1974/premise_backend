@@ -12,7 +12,7 @@ module.exports.loadAdmin = async () => {
     let count = await User.findOne({'email':'premise@andela.com'})
     const salt = await bcrypt.genSalt(10);
     let password = "12345"
-    let user = User({
+    let user = new User({
         "name": "Premise@Andela",
         "email": "premise@andela.com",
         "password": await bcrypt.hash(password, salt),
@@ -20,7 +20,7 @@ module.exports.loadAdmin = async () => {
     });
     if(count<1)
         user.save()
-    console.log("user admin="  + user.email + " password="+ password)
+    console.log("user admin="  + user.email + " password="+ password + " inserted")
 }
 
 
@@ -56,7 +56,8 @@ async function getMoviesFromWebService(){
     let genres = await Genre.find()
     return data.results.map(it => {
         let genre = genres[Math.floor(Math.random() * genres.length)]
-        return Movie({"title":it.title,
+        return new Movie({
+            "title":it.title,
             "genreId": genre._id,
             "popularity": it.popularity,
             "voteAverage": it.vote_average,
