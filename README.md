@@ -9,6 +9,8 @@ You can pull the docker image at this address: https://hub.docker.com/r/fb040974
 
 A 'MONGO_URL' environment variable for the URL of a running MondoDB  instance must be provided. By default, this variable is already set for a free online version of Mongo database at https://www.mongodb.com/. However, as a demo database server, it can stop at any time.
 
+MONGO_URL default value: [mongodb+srv://andela:andela@cluster0.b5ni9.mongodb.net/movies_db?authSource=admin&replicaSet=atlas-xljsw6-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true](mongodb+srv://andela:andela@cluster0.b5ni9.mongodb.net/movies_db?authSource=admin&replicaSet=atlas-xljsw6-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true)
+
 ####File [deploy.sh](deploy.sh) is a complete script with four main tasks:
 1. build the docker image
 2. push it to Docker-Hub
