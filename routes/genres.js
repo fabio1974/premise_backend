@@ -1,5 +1,5 @@
 const express = require('express');
-const auth = require('../middleware/auth')
+const auth = require('../middleware/check_auth')
 const {Genre, validate} = require("../models/genre");
 const router = express.Router();
 
